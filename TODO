@@ -1,0 +1,10 @@
+Seguir armando el bnf en yacc
+Hacer casos de prueba para el analizador léxico lex.py
+Hacer casos de prueba para el analizador sintáctico yacc.py
+Implementar búsqueda: posiblemente horizontal
+
+Hacer que la Sentencia tenga como propiedades:
+nro: orden en la kb
+comentario: como surgio ese conocimiento
+
+Definir __eq__ para las classes
