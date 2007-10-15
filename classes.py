@@ -80,6 +80,28 @@ class Sentence(object):
         s.source = "Prenexión 4"
         return s
 
+    def prenexion5(self):
+        s = deepcopy(self)
+        s.cuant = s.sentence.cuant
+        s.scope = s.sentence.scope
+        s.scope.add(s.connector, s.csentence)
+        s.sentence = None
+        s.connector = None
+        s.csentence = None
+        s.source = "Prenexión 5"
+        return s
+
+    def prenexion6(self):
+        s = deepcopy(self)
+        s.cuant = s.sentence.cuant
+        s.scope = s.sentence.scope
+        s.scope.add(s.connector, s.csentence)
+        s.sentence = None
+        s.connector = None
+        s.csentence = None
+        s.source = "Prenexión 6"
+        return s
+
 class Cuant(object):
     def __init__(self, cuant, var):
         self.cuant = cuant
@@ -260,15 +282,29 @@ class KnowledgeBase(object):
         return p.prenexion2()
 
     def can_prenexion3(self):
-        return [p for p in self.knowledge if p.connector in ('vel', 'VEL', 'or', 'OR')]  
+        return [p for p in self.knowledge if p.connector in ('vel', 'VEL', 'or', 'OR') and p.sentence.cuant.all()]  
         
     def do_prenexion3(self, p):
         '''Prenexion 3'''
         return p.prenexion3()
 
     def can_prenexion4(self):
-        return [p for p in self.knowledge if p.connector in ('and', 'AND')]  
+        return [p for p in self.knowledge if p.connector in ('and', 'AND') and p.sentence.cuant.all()]  
         
     def do_prenexion4(self, p):
-        '''Prenexion 3'''
+        '''Prenexion 4'''
         return p.prenexion4()
+
+    def can_prenexion5(self):
+        return [p for p in self.knowledge if p.connector in ('vel', 'VEL', 'or', 'OR') and p.sentence.cuant.exist()]  
+        
+    def do_prenexion5(self, p):
+        '''Prenexion 5'''
+        return p.prenexion5()
+
+    def can_prenexion6(self):
+        return [p for p in self.knowledge if p.connector in ('and', 'AND') and p.sentence.cuant.exist()]  
+        
+    def do_prenexion6(self, p):
+        '''Prenexion 6'''
+        return p.prenexion6()

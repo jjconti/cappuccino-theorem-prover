@@ -191,7 +191,43 @@ class TestPrenexiones(unittest.TestCase):
         s2 = "(A x)[(G(x) and P(x))]"
         r2 = self.yacc.parse(s2)
         r3 = r1.prenexion3()
-        self.assertEquals(r2, r3)        
+        self.assertEquals(r2, r3)      
+
+    def test9(self):
+        '''Prenexion 5'''
+        s1 = "((E x)[(P(x) -> G(x))] or P(x))"
+        r1 = self.yacc.parse(s1)
+        s2 = "(E x)[((P(x) -> G(x)) or P(x))]"
+        r2 = self.yacc.parse(s2)
+        r3 = r1.prenexion5()
+        self.assertEquals(r2, r3)
+
+    def test10(self):
+        '''Prenexion 5 simple'''
+        s1 = "((E x)[G(x)] or P(x))"
+        r1 = self.yacc.parse(s1)
+        s2 = "(E x)[(G(x) or P(x))]"
+        r2 = self.yacc.parse(s2)
+        r3 = r1.prenexion5()
+        self.assertEquals(r2, r3)   
+
+    def test11(self):
+        '''Prenexion 6'''
+        s1 = "((E x)[(P(x) -> G(x))] and P(x))"
+        r1 = self.yacc.parse(s1)
+        s2 = "(E x)[((P(x) -> G(x)) and P(x))]"
+        r2 = self.yacc.parse(s2)
+        r3 = r1.prenexion6()
+        self.assertEquals(r2, r3)
+
+    def test12(self):
+        '''Prenexion 6 simple'''
+        s1 = "((E x)[G(x)] and P(x))"
+        r1 = self.yacc.parse(s1)
+        s2 = "(E x)[(G(x) and P(x))]"
+        r2 = self.yacc.parse(s2)
+        r3 = r1.prenexion6()
+        self.assertEquals(r2, r3)     
 
 if __name__ == '__main__':
     unittest.main()
