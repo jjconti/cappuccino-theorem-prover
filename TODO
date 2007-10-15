@@ -8,3 +8,11 @@ nro: orden en la kb
 comentario: como surgio ese conocimiento
 
 Definir __eq__ para las classes
+
+
+El programa debe berificar que las formulas sean sentencias:
+    - no debe haber variables libres
+
+Poner bimp y imp como palabras clave
+
+quitar paréntesis redundantes

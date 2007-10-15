@@ -6,16 +6,24 @@ from yacc import yacc
 if __name__ == '__main__':
 
     import sys
-    
+    from classes import *
+
     if len(sys.argv) == 3:
         kb = KnowledgeBase()
         prem = open(sys.argv[1]).readlines()
-        for p in prem:
-            kb.add_knowledge(yacc.parse(p))
+        for n,p in enumerate(prem):
+            s = yacc.parse(p)
+            if s:
+                kb.add_knowledge(s)
+            else:
+                print "Error en la linea %d de %s" % (n, sys.argv[1])
         goals = open(sys.argv[2]).readlines()
-        for p in goals:
-            kb.add_goal(yacc.parse(p))
-
+        for n,g in enumerate(goals):
+            s = yacc.parse(g)
+            if s:
+                kb.add_goal(s)
+            else:
+                print "Error en la linea %d de %s" % (n, sys.argv[2])
         kb.search()
 
     else:

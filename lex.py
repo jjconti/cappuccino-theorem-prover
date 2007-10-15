@@ -7,15 +7,21 @@
 import ply.lex as lex
 
 # List of token names.   This is always required
-tokens = ('AND', 'OR', 'NOT', 'IMP', 'BIMP', 'VAR', 'CONST',
+tokens = ('AND', 'OR', 'NOT', 'IMP', 'BIMP', 'XOR', 'VAR', 'CONST',
 'PROPERTY', 'LPAREN', 'RPAREN', 'LBRAC', 'RBRAC', 'ALL', 'EXIST', 'COMMA')
 
 # Reserved words
 reserved = {
     'and' : 'AND',
     'AND' : 'AND',
+    'vel' : 'OR',
+    'VEL' : 'OR',
     'or' : 'OR',
-    'or' : 'OR',
+    'OR' : 'OR',
+    'aut' : 'XOR',
+    'AUT' : 'XOR',
+    'xor' : 'XOR',
+    'XOR' : 'XOR',
     'not' : 'NOT',
     'NOT' : 'NOT',
     'E' : 'EXIST',
@@ -44,7 +50,7 @@ def t_CONST(t):
     return t
 
 def t_PROPERTY(t):
-    r'[A-Z][a-zA-Z0-9_]*'
+    r'[A-Z][a-zA-Z0-9_\-]*'
     t.type = reserved.get(t.value,'PROPERTY')    # Check for reserved words
     return t
 

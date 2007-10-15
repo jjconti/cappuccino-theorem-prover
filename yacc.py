@@ -7,41 +7,49 @@ from classes import *
 # Get the token map from the lexer.  This is required.
 from lex import tokens
 
-#def p_sentence_not(p):
-#    'sentence : NOT sentence'
-#    p[0] = Sentence(True, sentence=p[2])
-
 def p_sentence0(p):
-    'sentence : NOT cuant scope'
-    p[0] = Sentence(True, cuant=p[2], scope=p[3]) 
+    'sentence : NOT LPAREN sentence RPAREN'
+    p[0] = Sentence(no=True, sentence=p[3]) 
 
 def p_sentence1(p):
     'sentence : cuant scope'
-    p[0] = Sentence(False, cuant=p[1], scope=p[2]) 
+    p[0] = Sentence(cuant=p[1], scope=p[2]) 
 
 def p_sentence2(p):
-    'sentence : expression'
-    p[0] = Sentence(False, expression=p[1])
+    'sentence : predicate'
+    p[0] = Sentence(predicate=p[1])
+
+def p_sentence3(p):
+    'sentence : LPAREN sentence connector sentence RPAREN'
+    p[0] = Sentence(sentence=p[2], connector=p[3], csentence=p[4])
+
+def p_sentence4(p):
+    'sentence : LPAREN sentence RPAREN'
+    p[0] = Sentence(sentence=p[2])
 
 def p_scope(p):
-    'scope : LBRAC expression RBRAC'
+    'scope : LBRAC sentence RBRAC'
     p[0] = Scope(p[2])
 
-def p_expression0(p):
-    'expression : NOT expression'
-    p[0] = Expression(True, expression=p[2])
+#def p_expression0(p):
+#    'expression : NOT LPAREN expression RPAREN'
+#    p[0] = Expression(True, expression=p[3])
 
-def p_expression_paren(p):
-    'expression : LPAREN expression RPAREN'
-    p[0] = Expression(False, expression=p[2])
+#def p_expression_paren(p):
+#    'expression : LPAREN expression RPAREN'
+#    p[0] = Expression(False, expression=p[2])
 
-def p_expression1(p):
-    'expression : predicate connector expression'
-    p[0] = Expression(False, predicate=p[1], connector=p[2], expression=p[3])
+#def p_expression1(p):
+#    'expression : predicate connector expression'
+#    p[0] = Expression(False, predicate=p[1], connector=p[2], expression=p[3])
 
-def p_expression2(p):
-    'expression : predicate'
-    p[0] = Expression(False, predicate=p[1])
+#def p_expression2(p):
+#    'expression : predicate'
+#    p[0] = Expression(False, predicate=p[1])
+
+#def p_expression3(p):
+#    'expression : NOT predicate'
+#    p[0] = Expression(True, predicate=p[1])
 
 def p_predicate(p):
     'predicate : PROPERTY LPAREN args RPAREN'
@@ -85,6 +93,10 @@ def p_connectors3(p):
 
 def p_connectors4(p):
     'connector : BIMP'
+    p[0] = p[1]
+
+def p_connectors5(p):
+    'connector : XOR'
     p[0] = p[1]
 
 # Error rule for syntax errors
