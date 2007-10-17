@@ -1,0 +1,33 @@
+a:link {
+	color: #0000FF;
+	font-weight: bold;
+}
+a:visited {
+	font-weight: bold;
+	color: #0000B2;
+}
+code {
+	border-width: 2px;
+	padding: fixed;
+	margin: fixed;
+	background-color: #DDFDFF;
+	font-family: courier, fixed, monospace;
+}
+em {
+	font-style: italic;
+}
+h1 {
+	color: #0000FF;
+	font-family: arial, helvetica, sans-serif;
+}
+h2 {
+	color: #0000FF;
+	font-family: arial, helvetica, sans-serif;
+}
+h3 {
+	color: #0000FF;
+	font-family: arial, helvetica, sans-serif;
+}
+p {
+	font-family: arial, helvetica, sans-serif;
+}
