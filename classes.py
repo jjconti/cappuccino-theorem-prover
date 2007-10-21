@@ -6,10 +6,10 @@ DEBUG = True
 # Classes for representing the sentences structure.
 
 class Sentence(object):
-    def __init__(self, no=False, cuant=None, scope=None, predicate=None, \
+    def __init__(self, no=False, quant=None, scope=None, predicate=None, \
                  sentence=None, connector=None, csentence=None):
         self.no = no
-        self.cuant = cuant
+        self.quant = quant
         self.scope = scope
         self.predicate = predicate
         self.sentence = sentence
@@ -19,21 +19,21 @@ class Sentence(object):
         self.source = "Premisa"
 
     def __str__(self):
-        if self.cuant and self.scope:
-            return "%s%s" % (str(self.cuant), str(self.scope))
+        if self.quant and self.scope:
+            return "%s%s" % (self.quant, self.scope)
         elif self.predicate:
             return str(self.predicate)
         elif self.connector:
-            return "(%s %s %s)" % (str(self.sentence), self.connector, str(self.csentence))
+            return "(%s %s %s)" % (self.sentence, self.connector, self.csentence)
         else:
             if self.no:
-                return "not (%s)" % str(self.sentence)
+                return "not %s" % self.sentence
             else:
                 return str(self.sentence)
 
     def __eq__(self, other):
         if other == None: return False
-        return self.no == other.no and self.cuant == other.cuant and \
+        return self.no == other.no and self.quant == other.quant and \
         self.scope == other.scope and self.predicate == other.predicate and \
         self.sentence == other.sentence and self.connector == other.connector \
         and self.csentence == other.csentence
@@ -46,7 +46,7 @@ class Sentence(object):
         s = deepcopy(self)
         s.no = False
         s.sentence.scope.no()
-        s.sentence.cuant.change()
+        s.sentence.quant.change()
         s.sentence.source = "Prenexión 1"
         return s.sentence
 
@@ -54,13 +54,13 @@ class Sentence(object):
         s = deepcopy(self)
         s.no = False
         s.sentence.scope.no()
-        s.sentence.cuant.change()
+        s.sentence.quant.change()
         s.sentence.source = "Prenexión 2"
         return s.sentence
 
     def prenexion3(self):
         s = deepcopy(self)
-        s.cuant = s.sentence.cuant
+        s.quant = s.sentence.quant
         s.scope = s.sentence.scope
         s.scope.add(s.connector, s.csentence)
         s.sentence = None
@@ -71,7 +71,7 @@ class Sentence(object):
 
     def prenexion4(self):
         s = deepcopy(self)
-        s.cuant = s.sentence.cuant
+        s.quant = s.sentence.quant
         s.scope = s.sentence.scope
         s.scope.add(s.connector, s.csentence)
         s.sentence = None
@@ -82,7 +82,7 @@ class Sentence(object):
 
     def prenexion5(self):
         s = deepcopy(self)
-        s.cuant = s.sentence.cuant
+        s.quant = s.sentence.quant
         s.scope = s.sentence.scope
         s.scope.add(s.connector, s.csentence)
         s.sentence = None
@@ -93,7 +93,7 @@ class Sentence(object):
 
     def prenexion6(self):
         s = deepcopy(self)
-        s.cuant = s.sentence.cuant
+        s.quant = s.sentence.quant
         s.scope = s.sentence.scope
         s.scope.add(s.connector, s.csentence)
         s.sentence = None
@@ -102,29 +102,45 @@ class Sentence(object):
         s.source = "Prenexión 6"
         return s
 
-class Cuant(object):
-    def __init__(self, cuant, var):
-        self.cuant = cuant
+    def can_modus_ponens(self, p2):
+        return self.connector in ('->',) and self.sentence == p2
+
+    def modus_ponens(self):
+        s = deepcopy(self.csentence)
+        s.source = "Modus Ponens"
+        return s
+
+    def can_ug(self):
+        return True
+
+    def ug(self):
+        s = Sentence(quant=Quant('A', 'x'), scope=Scope(deepcopy(self)))
+        s.source = "Universal Generalization"
+        return s
+
+class Quant(object):
+    def __init__(self, quant, var):
+        self.quant = quant
         self.var = var
 
     def __str__(self):
-        return "(%s %s)" % (self.cuant, self.var)
+        return "(%s %s)" % (self.quant, self.var)
 
     def __eq__(self, other):
         if other == None: return False
-        return self.cuant == other.cuant and self.var == other.var
+        return self.quant == other.quant and self.var == other.var
 
     def all(self):
-        return self.cuant == 'A'
+        return self.quant == 'A'
 
     def exist(self):
-        return self.cuant == 'E'
+        return self.quant == 'E'
 
     def change(self):
-        if self.cuant == 'A':
-            self.cuant = 'E'
-        elif self.cuant == 'E':
-            self.cuant = 'A'
+        if self.quant == 'A':
+            self.quant = 'E'
+        elif self.quant == 'E':
+            self.quant = 'A'
 
 
 class Scope(object):
@@ -132,7 +148,7 @@ class Scope(object):
         self.sentence = sentence
 
     def __str__(self):
-        return "[%s]" % (str(self.sentence),)
+        return "[%s]" % (self.sentence,)
 
     def __eq__(self, other):
         if other == None: return False
@@ -145,35 +161,6 @@ class Scope(object):
         self.sentence = Sentence(sentence=self.sentence, connector=connector, \
                                  csentence=sentence)
 
-#class Expression(object):
-#    def __init__(self, no, predicate=None, connector=None, expression=None):
-#        self.no = no
-#        self.predicate = predicate
-#        self.connector = connector
-#        self.expression = expression
-#        self.simple = connector is None and predicate is not None
-#
-#    def __str__(self):
-#        if self.simple:
-#            return str(self.predicate)
-#        else:
-#            if self.no:
-#                no = "not "
-#            else:
-#                no = ""
-#            if not self.predicate:
-#                return no + "(" + str(self.expression) + ")"
-#            elif not self.connector:
-#                return no + str(self.predicate)
-#            else:
-#                return no + "%s %s %s" % (str(self.predicate), \
-#                str(self.connector), str(self.expression))
-#
-#    def __eq__(self, other):
-#        if other == None: return False
-#        return self.no == other.no and self.predicate == other.predicate and \
-#        self.connector == other.connector and \
-#        self.expression == other.expression 
 
 class Predicate(object):
     def __init__(self, property, args):
@@ -268,43 +255,62 @@ class KnowledgeBase(object):
 
     def can_prenexion1(self):
         print self.knowledge
-        return [p for p in self.knowledge if p.no and p.sentence.cuant.all()]
+        return [p for p in self.knowledge if p.no and p.sentence.quant.all()]
 
     def do_prenexion1(self, p):
         '''Prenexión 1'''
         return p.prenexion1()
       
     def can_prenexion2(self):
-        return [p for p in self.knowledge if p.no and p.sentence.cuant.exist()]
+        return [p for p in self.knowledge if p.no and p.sentence.quant.exist()]
 
     def do_prenexion2(self, p):
         '''Prenexión 2'''
         return p.prenexion2()
 
     def can_prenexion3(self):
-        return [p for p in self.knowledge if p.connector in ('vel', 'VEL', 'or', 'OR') and p.sentence.cuant.all()]  
+        return [p for p in self.knowledge if p.connector \
+               in ('vel', 'VEL', 'or', 'OR',) and p.sentence.quant.all()]  
         
     def do_prenexion3(self, p):
         '''Prenexion 3'''
         return p.prenexion3()
 
     def can_prenexion4(self):
-        return [p for p in self.knowledge if p.connector in ('and', 'AND') and p.sentence.cuant.all()]  
+        return [p for p in self.knowledge if p.connector in ('and', 'AND',) \
+               and p.sentence.quant.all()]  
         
     def do_prenexion4(self, p):
         '''Prenexion 4'''
         return p.prenexion4()
 
     def can_prenexion5(self):
-        return [p for p in self.knowledge if p.connector in ('vel', 'VEL', 'or', 'OR') and p.sentence.cuant.exist()]  
+        return [p for p in self.knowledge if p.connector \
+               in ('vel', 'VEL', 'or', 'OR',) and p.sentence.quant.exist()]  
         
     def do_prenexion5(self, p):
         '''Prenexion 5'''
         return p.prenexion5()
 
     def can_prenexion6(self):
-        return [p for p in self.knowledge if p.connector in ('and', 'AND') and p.sentence.cuant.exist()]  
+        return [p for p in self.knowledge if p.connector in ('and', 'AND',) \
+               and p.sentence.quant.exist()]  
         
     def do_prenexion6(self, p):
         '''Prenexion 6'''
         return p.prenexion6()
+
+    def can_modus_ponens(self):
+        return [(p1,p2) for p1,p2 in zip(self.knowledge, self.knowledge) \
+               if p1.can_modus_ponens(p2)]  
+        
+    def do_modus_ponens(self, p1):
+        '''Modus ponens'''
+        return p1.modus_ponens()
+
+    def can_ug(self):
+        return [p for p in self.knowledge if p.can_ug()]  
+        
+    def do_ug(self, p):
+        '''Universal Generalization'''
+        return p.ug()

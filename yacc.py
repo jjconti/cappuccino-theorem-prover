@@ -8,12 +8,12 @@ from classes import *
 from lex import tokens
 
 def p_sentence0(p):
-    'sentence : NOT LPAREN sentence RPAREN'
-    p[0] = Sentence(no=True, sentence=p[3]) 
+    'sentence : NOT sentence'
+    p[0] = Sentence(no=True, sentence=p[2]) 
 
 def p_sentence1(p):
-    'sentence : cuant scope'
-    p[0] = Sentence(cuant=p[1], scope=p[2]) 
+    'sentence : quant scope'
+    p[0] = Sentence(quant=p[1], scope=p[2]) 
 
 def p_sentence2(p):
     'sentence : predicate'
@@ -23,61 +23,37 @@ def p_sentence3(p):
     'sentence : LPAREN sentence connector sentence RPAREN'
     p[0] = Sentence(sentence=p[2], connector=p[3], csentence=p[4])
 
-def p_sentence4(p):
-    'sentence : LPAREN sentence RPAREN'
-    p[0] = Sentence(sentence=p[2])
-
 def p_scope(p):
     'scope : LBRAC sentence RBRAC'
     p[0] = Scope(p[2])
 
-#def p_expression0(p):
-#    'expression : NOT LPAREN expression RPAREN'
-#    p[0] = Expression(True, expression=p[3])
-
-#def p_expression_paren(p):
-#    'expression : LPAREN expression RPAREN'
-#    p[0] = Expression(False, expression=p[2])
-
-#def p_expression1(p):
-#    'expression : predicate connector expression'
-#    p[0] = Expression(False, predicate=p[1], connector=p[2], expression=p[3])
-
-#def p_expression2(p):
-#    'expression : predicate'
-#    p[0] = Expression(False, predicate=p[1])
-
-#def p_expression3(p):
-#    'expression : NOT predicate'
-#    p[0] = Expression(True, predicate=p[1])
-
 def p_predicate(p):
-    'predicate : PROPERTY LPAREN args RPAREN'
+    'predicate : PROPERTY LPAREN terms RPAREN'
     p[0] = Predicate(p[1], p[3])
 
-def p_args1(p):
-    'args : arg COMMA args'
+def p_terms1(p):
+    'terms : term COMMA terms'
     p[0] = [p[1]] + p[3]
 
-def p_args2(p):
-    'args : arg'
+def p_terms2(p):
+    'terms : term'
     p[0] = [p[1]]
 
-def p_arg1(p):
-    'arg : VAR'
+def p_term1(p):
+    'term : VAR'
     p[0] = p[1]
 
-def p_arg2(p):  
-    'arg : CONST'
+def p_term2(p):  
+    'term : CONST'
     p[0] = p[1]
 
-def p_cuant1(p):
-    'cuant : LPAREN ALL VAR RPAREN'
-    p[0] = Cuant(p[2], p[3])
+def p_quant1(p):
+    'quant : LPAREN ALL VAR RPAREN'
+    p[0] = Quant(p[2], p[3])
 
-def p_cuant2(p):
-    'cuant : LPAREN EXIST VAR RPAREN'
-    p[0] = Cuant(p[2], p[3])
+def p_quant2(p):
+    'quant : LPAREN EXIST VAR RPAREN'
+    p[0] = Quant(p[2], p[3])
 
 def p_connectors1(p):
     'connector : AND'
