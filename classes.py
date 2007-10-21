@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-from copy import deepcopy
+#from copy import deepcopy
+from copy import copy as deepcopy
 
 DEBUG = True
+MAX = 5
 
 # Classes for representing the sentences structure.
 
@@ -114,9 +116,18 @@ class Sentence(object):
         return True
 
     def ug(self):
-        s = Sentence(quant=Quant('A', 'x'), scope=Scope(deepcopy(self)))
+        var = self.get_any_var()
+        s = Sentence(quant=Quant('A', var), scope=Scope(deepcopy(self)))
         s.source = "Universal Generalization"
         return s
+
+    def get_any_var(self):
+        '''Returns the first variable found'''
+        if self.predicate:
+            return self.predicate.terms[0]
+        elif self.scope:
+            return self.scope.sentence.get_any_var()
+        else: return self.sentence.get_any_var()
 
 class Quant(object):
     def __init__(self, quant, var):
@@ -163,17 +174,17 @@ class Scope(object):
 
 
 class Predicate(object):
-    def __init__(self, property, args):
-        '''args is a list of constants or variables'''
+    def __init__(self, property, terms):
+        '''terms is a list of constants or variables'''
         self.property = property
-        self.args = args
+        self.terms = terms
 
     def __str__(self):
-        return "%s(%s)" % (self.property, ",".join(self.args))
+        return "%s(%s)" % (self.property, ",".join(self.terms))
 
     def __eq__(self, other):
         if other == None: return False
-        return self.property == other.property and self.args == self.args
+        return self.property == other.property and self.terms == self.terms
 
 # KnowledgeBase 
 
@@ -198,17 +209,9 @@ class KnowledgeBase(object):
         self.goals.append(sentence)
 
     def meta_proof(self):
-        print "Prueba de meta"
-        print "Goals"
-        for p in self.goals:
-            print p
-        print "Prems"
-        for p in self.knowledge:
-            print p
         #return set(self.goals).issubset(set(self.knowledge))
         for g in self.goals:
             if g not in self.knowledge:
-                print "No se cumplio la prueba"                    
                 return False
         return True
     
@@ -216,37 +219,39 @@ class KnowledgeBase(object):
 
         if self.meta_proof():
             self.print_solution()
+        elif self.level >= MAX:
+            print "Maximo nivel  de profundidad alcanzado: %s" % (MAX,)
         else:
             can  = [m for m in dir(self) if m.startswith('can_')]
             prem_lists = [getattr(self, c)() for c in can] #some lists can be []
             do = ['do_'+d[4:] for d in can]
             # Pairs operator,list of sentences that can be operated
             do_prems = [dp for dp in zip(do, prem_lists) if dp[1] != []]
+            if DEBUG: print "Se crearan %s nodos. Nivel: %s" % \
+                      (len(do_prems), self.level)
             
             # Create sons (or doughters :)
-            print do_prems
             for d,p in do_prems:
                 for i in p:
                     new = deepcopy(self)
                     new.father = self
                     new.level = self.level + 1
-                    print "new nodo, nivel:", new.level
                     new.sons = []
                     s = getattr(self,d)(i)
                     if s not in self.knowledge:
+                        if DEBUG: print getattr(self, d).__doc__
                         new.add_knowledge(s)
                         self.sons.append(new)
 
             # Pick a son. It depends of the search method used.
             
             # Amplitud
-            raw_input()
-            if self.sons:
-                son = self.sons.pop(0)
-                print "Llamada recursiva"
-                son.search()
-
-            print "Final del metodo search"
+            #raw_input()
+            #if self.sons:
+            #    son = self.sons.pop(0)
+            #    son.search()
+            for s in self.sons:
+                s.search()
 
     def print_solution(self):
         print "SOLUCION:"
@@ -254,7 +259,6 @@ class KnowledgeBase(object):
             print "%d) %s - %s" % (n + 1, k, k.source)
 
     def can_prenexion1(self):
-        print self.knowledge
         return [p for p in self.knowledge if p.no and p.sentence.quant.all()]
 
     def do_prenexion1(self, p):
@@ -301,12 +305,12 @@ class KnowledgeBase(object):
         return p.prenexion6()
 
     def can_modus_ponens(self):
-        return [(p1,p2) for p1,p2 in zip(self.knowledge, self.knowledge) \
+        return [p1 for p1 in self.knowledge for p2 in self.knowledge \
                if p1.can_modus_ponens(p2)]  
         
-    def do_modus_ponens(self, p1):
+    def do_modus_ponens(self, p):
         '''Modus ponens'''
-        return p1.modus_ponens()
+        return p.modus_ponens()
 
     def can_ug(self):
         return [p for p in self.knowledge if p.can_ug()]  

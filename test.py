@@ -315,5 +315,13 @@ class TestQuantRules(unittest.TestCase):
         r2 = self.yacc.parse(s2)
         self.assertEquals(r1.ug(), r2)
 
+    def test3(self):
+        '''ug 3'''
+        s1 = "(P(y) or G(x))"
+        s2 = "(A y)[(P(y) or G(x))]"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertEquals(r1.ug(), r2)
+
 if __name__ == '__main__':
     unittest.main()
