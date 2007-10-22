@@ -1,13 +1,18 @@
-Seguir armando el bnf en yacc
-Hacer casos de prueba para el analizador léxico lex.py
-Hacer casos de prueba para el analizador sintáctico yacc.py
-Implementar búsqueda: posiblemente horizontal
+                      Cappuccino Theorem Prover TODO file.
+                      ====================================                                             
 
+El contenido de este archivo es en exesivamente volatil y no debería
+tomarse como referencia, excepto para los desarrolladores del software. Es una
+hoja borrador con las propiedades de los bienes digitales.
+
+Hacer modificaciones luego de la siguietne línea:
+
+--------------------------------------------------------------------------------
+
+Numerar las sentencias para qeu podamos tener salidas del tipo:
+por Modus Ponens en 3
 Hacer que la Sentencia tenga como propiedades:
 nro: orden en la kb
-comentario: como surgio ese conocimiento
-
-Definir __eq__ para las classes
 
 
 El programa debe berificar que las formulas sean sentencias:
@@ -20,4 +25,5 @@ quitar paréntesis redundantes
 ver los modulso cmd y shlex
 
 leer los capitulos 8 y 9 del libro de ia
+
 
