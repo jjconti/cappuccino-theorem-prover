@@ -1,1 +1,1 @@
-(E x)[not ((P(x) -> G(x)))]
+(E x)[not (P(x) -> G(x))]

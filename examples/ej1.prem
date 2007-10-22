@@ -1,1 +1,1 @@
-not ((A x)[(P(x) -> G(x))])
+not (A x)[(P(x) -> G(x))]

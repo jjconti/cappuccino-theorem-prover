@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #from copy import deepcopy
-from copy import copy as deepcopy
+from copy import copy, deepcopy
 
 DEBUG = True
 MAX = 5
@@ -195,6 +195,7 @@ class KnowledgeBase(object):
     def __init__(self):
         self.father = None
         self.level = 0
+        self.nson = 0
         self.sons = []
         self.knowledge = []
         self.goals = []
@@ -231,30 +232,27 @@ class KnowledgeBase(object):
                       (len(do_prems), self.level)
             
             # Create sons (or doughters :)
+            nson = 1
             for d,p in do_prems:
                 for i in p:
-                    new = deepcopy(self)
+                    new = copy(self)
                     new.father = self
                     new.level = self.level + 1
+                    new.nson = nson
+                    nson += 1
                     new.sons = []
                     s = getattr(self,d)(i)
                     if s not in self.knowledge:
                         if DEBUG: print getattr(self, d).__doc__
                         new.add_knowledge(s)
                         self.sons.append(new)
-
-            # Pick a son. It depends of the search method used.
             
             # Amplitud
-            #raw_input()
-            #if self.sons:
-            #    son = self.sons.pop(0)
-            #    son.search()
             for s in self.sons:
                 s.search()
 
     def print_solution(self):
-        print "SOLUCION:"
+        print "SOLUCION: nodo %d del nivel %d" % (self.nson, self.level)
         for n,k in enumerate(self.knowledge):
             print "%d) %s - %s" % (n + 1, k, k.source)
 
