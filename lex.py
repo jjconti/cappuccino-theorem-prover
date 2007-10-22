@@ -34,10 +34,8 @@ t_RPAREN = r'\)'
 t_LBRAC = r'\['
 t_RBRAC = r'\]'
 t_COMMA = r','
-# IMP and BIMP tokens can have variable lenght
-# <-->, ->, ----> or <------> are valid tokens
-t_IMP  = r'-+>'
-t_BIMP  = r'<-+>'
+t_IMP  = r'->'
+t_BIMP  = r'<->'
 
 def t_VAR(t):
     r'[a-z]+'

@@ -229,6 +229,78 @@ class TestPrenexiones(unittest.TestCase):
         r3 = r1.prenexion6()
         self.assertEquals(r2, r3)     
 
+    def test13(self):
+        '''Can prenexion 6 1'''
+        s1 = "((E x)[G(x)] and P(x))"
+        r1 = self.yacc.parse(s1)
+        self.assertTrue(r1.can_prenexion6())  
+
+    def test14(self):
+        '''Can prenexion 6 2'''
+        s1 = "(G(x) and P(x))"
+        r1 = self.yacc.parse(s1)
+        self.assertFalse(r1.can_prenexion6())       
+
+    def test15(self):
+        '''Prenexion 7'''
+        s1 = "((E x)[(P(x) -> G(x))] -> (A x)[P(x)])"
+        r1 = self.yacc.parse(s1)
+        s2 = "(A x)[((E x)[(P(x) -> G(x))] -> P(x))]"
+        r2 = self.yacc.parse(s2)
+        r3 = r1.prenexion7()
+        self.assertEquals(r2, r3)
+
+    def test16(self):
+        '''Prenexion 7 simple'''
+        s1 = "(G(x) -> (A x)[P(x)])"
+        r1 = self.yacc.parse(s1)
+        s2 = "(A x)[(G(x) -> P(x))]"
+        r2 = self.yacc.parse(s2)
+        r3 = r1.prenexion7()
+        self.assertEquals(r2, r3)     
+
+    def test17(self):
+        '''Can prenexion 7 1'''
+        s1 = "((E x)[G(x)] -> (A x)[P(x)])"
+        r1 = self.yacc.parse(s1)
+        self.assertTrue(r1.can_prenexion7())  
+
+    def test18(self):
+        '''Can prenexion 7 2'''
+        s1 = "(G(x) -> P(x))"
+        r1 = self.yacc.parse(s1)
+        self.assertFalse(r1.can_prenexion7()) 
+
+    def test19(self):
+        '''Prenexion 8'''
+        s1 = "((E x)[(P(x) -> G(x))] -> (E x)[P(x)])"
+        r1 = self.yacc.parse(s1)
+        s2 = "(E x)[((E x)[(P(x) -> G(x))] -> P(x))]"
+        r2 = self.yacc.parse(s2)
+        r3 = r1.prenexion8()
+        self.assertEquals(r2, r3)
+
+    def test20(self):
+        '''Prenexion 8 simple'''
+        s1 = "(G(x) -> (E x)[P(x)])"
+        r1 = self.yacc.parse(s1)
+        s2 = "(E x)[(G(x) -> P(x))]"
+        r2 = self.yacc.parse(s2)
+        r3 = r1.prenexion8()
+        self.assertEquals(r2, r3)     
+
+    def test21(self):
+        '''Can prenexion 8 1'''
+        s1 = "((E x)[G(x)] -> (E x)[P(x)])"
+        r1 = self.yacc.parse(s1)
+        self.assertTrue(r1.can_prenexion8())  
+
+    def test22(self):
+        '''Can prenexion 8 2'''
+        s1 = "(G(x) -> P(x))"
+        r1 = self.yacc.parse(s1)
+        self.assertFalse(r1.can_prenexion8()) 
+
 class TestModus(unittest.TestCase):
     '''Test modus ponens and tollens'''
 

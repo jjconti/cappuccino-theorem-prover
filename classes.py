@@ -2,8 +2,8 @@
 #from copy import deepcopy
 from copy import copy, deepcopy
 
-DEBUG = True
-MAX = 5
+DEBUG = False
+MAX = 7
 
 # Classes for representing the sentences structure.
 
@@ -93,6 +93,12 @@ class Sentence(object):
         s.source = "Prenexión 5"
         return s
 
+    def can_prenexion6(self):
+        if self.connector in ('and', 'AND',):
+            if self.sentence.quant:
+                return self.sentence.quant.exist()
+        return False
+
     def prenexion6(self):
         s = deepcopy(self)
         s.quant = s.sentence.quant
@@ -102,6 +108,40 @@ class Sentence(object):
         s.connector = None
         s.csentence = None
         s.source = "Prenexión 6"
+        return s
+
+    def can_prenexion7(self):
+        if self.connector in ('->',):
+            if self.csentence.quant:
+                return self.csentence.quant.all()
+        return False
+
+    def prenexion7(self):
+        s = deepcopy(self)
+        s.quant = s.csentence.quant
+        s.scope = Scope(Sentence(sentence=s.sentence, connector=s.connector, \
+                  csentence=s.csentence.scope.sentence))
+        s.sentence = None
+        s.connector = None
+        s.csentence = None
+        s.source = "Prenexión 7"
+        return s
+
+    def can_prenexion8(self):
+        if self.connector in ('->',):
+            if self.csentence.quant:
+                return self.csentence.quant.exist()
+        return False
+
+    def prenexion8(self):
+        s = deepcopy(self)
+        s.quant = s.csentence.quant
+        s.scope = Scope(Sentence(sentence=s.sentence, connector=s.connector, \
+                  csentence=s.csentence.scope.sentence))
+        s.sentence = None
+        s.connector = None
+        s.csentence = None
+        s.source = "Prenexión 8"
         return s
 
     def can_modus_ponens(self, p2):
@@ -221,7 +261,7 @@ class KnowledgeBase(object):
         if self.meta_proof():
             self.print_solution()
         elif self.level >= MAX:
-            print "Maximo nivel  de profundidad alcanzado: %s" % (MAX,)
+            if DEBUG: print "Maximo nivel  de profundidad alcanzado: %s" % (MAX,)
         else:
             can  = [m for m in dir(self) if m.startswith('can_')]
             prem_lists = [getattr(self, c)() for c in can] #some lists can be []
@@ -236,6 +276,7 @@ class KnowledgeBase(object):
             for d,p in do_prems:
                 for i in p:
                     new = copy(self)
+                    new.knowledge = copy(self.knowledge) #reesribir copy
                     new.father = self
                     new.level = self.level + 1
                     new.nson = nson
@@ -247,7 +288,7 @@ class KnowledgeBase(object):
                         new.add_knowledge(s)
                         self.sons.append(new)
             
-            # Amplitud
+            # Profundidad acotada
             for s in self.sons:
                 s.search()
 
@@ -295,12 +336,25 @@ class KnowledgeBase(object):
         return p.prenexion5()
 
     def can_prenexion6(self):
-        return [p for p in self.knowledge if p.connector in ('and', 'AND',) \
-               and p.sentence.quant.exist()]  
+        return [p for p in self.knowledge if p.can_prenexion6()]  
         
     def do_prenexion6(self, p):
         '''Prenexion 6'''
         return p.prenexion6()
+
+    def can_prenexion7(self):
+        return [p for p in self.knowledge if p.can_prenexion7()]  
+        
+    def do_prenexion7(self, p):
+        '''Prenexion 7'''
+        return p.prenexion7()
+
+    def can_prenexion8(self):
+        return [p for p in self.knowledge if p.can_prenexion8()]  
+        
+    def do_prenexion8(self, p):
+        '''Prenexion 8'''
+        return p.prenexion8()
 
     def can_modus_ponens(self):
         return [p1 for p1 in self.knowledge for p2 in self.knowledge \
