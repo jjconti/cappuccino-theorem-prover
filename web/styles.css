@@ -36,3 +36,8 @@ p {
 	font-family: arial, helvetica, sans-serif;
 }
 
+#logo{
+	float: right;
+	margin-left: 20px;
+	margin-bottom: 20px;
+}
