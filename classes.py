@@ -261,7 +261,7 @@ class KnowledgeBase(object):
         if self.meta_proof():
             self.print_solution()
         elif self.level >= MAX:
-            if DEBUG: print "Maximo nivel  de profundidad alcanzado: %s" % (MAX,)
+            if DEBUG: print "Maximo nivel de profundidad alcanzado: %s" % (MAX,)
         else:
             can  = [m for m in dir(self) if m.startswith('can_')]
             prem_lists = [getattr(self, c)() for c in can] #some lists can be []
