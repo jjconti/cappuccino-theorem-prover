@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Cappuccino - Desarrollo</title>
+<link href="styles.css" type="text/css" rel="stylesheet">
+<meta name="generator" content="Bluefish 1.0.7">
+<meta name="author" content="Juanjo Conti">
+<meta name="date" content="2007-10-31T13:27:05-0300">
+<meta name="copyright" content="Juan José Conti -jjconti@gnu.org y Joel J. Lorenzatti -jjlorenzatti@gmail.com-">
+<meta name="keywords" content="logic logica probador teoremas therem prober">
+<meta name="description" content="">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8">
+</head>
+<body>
+<h1>Desarrollo</h1>
+<p>
+Cappuccino est&aacute; desarrollando en <a href="http://www.python.org" target="_blank" name="Python Programming Language">Python</a>.
+</p>
+<h2>BNF</h2>
+<div class="code">
+&lt;Setence> ::= &lt;Atomic-sentence><br/>
+&lt;Setence> ::= not &lt;Sentence><br/>
+&lt;Setence> ::= (&lt;Sentence> &lt;Connector> &lt;Sentence>)<br/>
+&lt;Setence> ::= (&lt;Quatifier> &lt;Variable>)[&lt;Sentence>] <br/>
+<br/>
+&lt;Atomic-sentence> ::= &lt;Predicate>(&lt;Terms>)<br/>
+<br/>
+&lt;Terms> ::= &lt;Term><br/>
+&lt;Terms> ::= &lt;Term>, &lt;Terms><br/>
+<br/>
+&lt;Term> ::= &lt;Constant><br/>
+&lt;Term> ::= &lt;Variable><br/>
+<br/>
+&lt;Connector> ::= and | or | -> | <-> | xor<br/>
+<br/>
+&lt;Quatifier> ::= A | E
+</div>
+<h2>Diagrama de clases</h2>
+<p>En el siguiente diagrama se ven las clases utilizadas para modelar las sentencias de
+l&oacute;gica de primer orden y c&oacute;mo se relacionan:</p>
+<h2>Reglas implementadas</h2>
+<p>
+Cappuccino utiliza las siguientes reglas de Deducci&oacute;n Natural:
+</p>
+<h2>Obtener el c&oacute;digo fuente</h2>
+<p>
+El control de versiones del c&oacute;digo fuente es llevado a cabo en un repositorio svn. 
+Puede obtener una copia del codigo fuente mediante 
+el siguiente comando en GNU/Linux
+</p>
+<div class="code">
+svn co http://svn.juanjoconti.com.ar/logic/
+</div>
+<p>
+o en Windows mediante alguna de muchas herramientas. La misma direcci&oacute;n también permite 
+navegar por el c&oacute;digo fuente: <a href="http://svn.juanjoconti.com.ar/logic/">http://svn.juanjoconti.com.ar/logic/</a>
+</p>
+</body>
+</html>
