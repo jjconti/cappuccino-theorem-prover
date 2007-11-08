@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>Probador de teoremas de Lógica de Priemer Orden</title>
-<link href="styles.css" type="text/css" rel="stylesheet">
+<link href="css/styles.css" type="text/css" rel="stylesheet">
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Juanjo Conti">
 <meta name="date" content="2007-10-31T13:00:35-0300">
@@ -14,65 +14,24 @@
 </head>
 <body>
 <img id="logo" src="./imgs/logo-blue.jpg" width="361" height="470" alt="Logo">
-<h1>¿Qué es Cappuccino?</h1>
+<h1>Cappuccino</h1>
 <p>
 Cappuccino Theorem Prover es un probador autom&aacute;tico de teoremas de 
 l&oacute;gica de predicados de primer orden mediante deducción natural.
-Esto significa que puede recibir un conjunto de premisas como:
 </p>
-<div class="code">
-Premisas..
-</div>
-<p>y objetivos</p>
-<div class="code">
-objetivos
-</div>
-<p>y obtener la secuencia de pasos que tendría que realizar un humano para demostrar 
-que los objetivos son consecuencia l&oacute;gica de las premisas.</p>
-<h1>Tutorial</h1>
-<h1>Funcionamiento</h1>
-<h2>BNF</h2>
-<div class="code">
-&lt;Setence> ::= &lt;Atomic-sentence><br/>
-&lt;Setence> ::= not &lt;Sentence><br/>
-&lt;Setence> ::= (&lt;Sentence> &lt;Connector> &lt;Sentence>)<br/>
-&lt;Setence> ::= (&lt;Quatifier> &lt;Variable>)[&lt;Sentence>] <br/>
-<br/>
-&lt;Atomic-sentence> ::= &lt;Predicate>(&lt;Terms>)<br/>
-<br/>
-&lt;Terms> ::= &lt;Term><br/>
-&lt;Terms> ::= &lt;Term>, &lt;Terms><br/>
-<br/>
-&lt;Term> ::= &lt;Constant><br/>
-&lt;Term> ::= &lt;Variable><br/>
-<br/>
-&lt;Connector> ::= and | or | -> | <-> | xor<br/>
-<br/>
-&lt;Quatifier> ::= A | E
-</div>
-<h2>Reglas utilizadas</h2>
-<p>
-Cappuccino utiliza las siguientes reglas de Deducci&oacute;n Natural:
-</p>
-<h1>Desarrollo</h1>
-<p>
-El control de versiones del c&oacute;digo fuente es llevado a cabo en un repositorio svn. 
-Puede obtener una copia del codigo fuente mediante 
-el siguiente comando en GNU/Linux
-</p>
-<div class="code">
-svn co http://svn.juanjoconti.com.ar/logic/
-</div>
-<p>
-o en Windows mediante alguna de muchas herramientas. La misma direcci&oacute;n también permite 
-navegar por el c&oacute;digo fuente: <a href="http://svn.juanjoconti.com.ar/logic/">http://svn.juanjoconti.com.ar/logic/</a>
-</p>
-<h1>Marco te&oacute;rico</h1>
-<h1>Autores y Licencia</h1>
+<h2>Primer <em>release</em></h2>
+<p>El primer <em>release</em> del software está planeado para mediados de enero de 2008.
+Si tenés preguntas, ideas o sugerencias que no pueden esperar, contactate con los autores.</p>
+<h2>Autores y Licencia</h2>
 <p>
 XXX es desarrollado por <a href="mailto:jjconti@gnu.org">Juan José Conti &lt;jjconti@gnu.org&gt;</a> y 
 <a href="mailto:jjlorenzatti@gmail.com">Joel J. Lorenzatti &lt;jjlorenzatti@gmail.com&gt;</a> y es distribuido bajo los t&eacute;rminos de la licencia de
 Software Libre <a href="gpl-3.0.html">GPL version 3</a>. Toda colaboración es bienvenida.
 </p>
+<h2>SVN</h2>
+<p>Requiere autorización</p>
+<div class="code">
+svn co http://svn.juanjoconti.com.ar/logic/
+</div>
 </body>
 </html>

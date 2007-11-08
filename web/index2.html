@@ -1,11 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-<title>Cappuccino - Desarrollo</title>
+<title>Probador de teoremas de Lógica de Priemer Orden</title>
 <link href="css/styles.css" type="text/css" rel="stylesheet">
 <meta name="generator" content="Bluefish 1.0.7">
 <meta name="author" content="Juanjo Conti">
-<meta name="date" content="2007-10-31T13:50:44-0300">
+<meta name="date" content="2007-10-31T13:00:35-0300">
 <meta name="copyright" content="Juan José Conti -jjconti@gnu.org y Joel J. Lorenzatti -jjlorenzatti@gmail.com-">
 <meta name="keywords" content="logic logica probador teoremas therem prober">
 <meta name="description" content="">
@@ -13,15 +13,24 @@
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8">
 </head>
 <body>
-<h1>Desarrollo</h1>
+<img id="logo" src="./imgs/logo-blue.jpg" width="361" height="470" alt="Logo">
+<h1>¿Qué es Cappuccino?</h1>
 <p>
-Cappuccino est&aacute; desarrollando en <a href="http://www.python.org" target="_blank" name="Python Programming Language">Python</a>.
+Cappuccino Theorem Prover es un probador autom&aacute;tico de teoremas de 
+l&oacute;gica de predicados de primer orden mediante deducción natural.
+Esto significa que puede recibir un conjunto de premisas como:
 </p>
-<h2>B&uacute;squeda</h2>
-<p>
-Para encontrar las secuencias de pasos que prueban un teorema dado se usa la técnica de IA conocida como Búsqueda en
-profundidad iterativa.
-</p>
+<div class="code">
+Premisas..
+</div>
+<p>y objetivos</p>
+<div class="code">
+objetivos
+</div>
+<p>y obtener la secuencia de pasos que tendría que realizar un humano para demostrar 
+que los objetivos son consecuencia l&oacute;gica de las premisas.</p>
+<h1>Tutorial</h1>
+<h1>Funcionamiento</h1>
 <h2>BNF</h2>
 <div class="code">
 &lt;Setence> ::= &lt;Atomic-sentence><br/>
@@ -41,17 +50,11 @@ profundidad iterativa.
 <br/>
 &lt;Quatifier> ::= A | E
 </div>
-<h2>Diagrama de clases</h2>
-<p>En el siguiente diagrama se ven las clases utilizadas para modelar las sentencias de
-l&oacute;gica de primer orden y c&oacute;mo se relacionan:</p>
-<center>
-<img src="imgs/clases.png" width="628" height="254" border="0" alt="Diagrama de clases">
-</center>
-<h2>Reglas implementadas</h2>
+<h2>Reglas utilizadas</h2>
 <p>
 Cappuccino utiliza las siguientes reglas de Deducci&oacute;n Natural:
 </p>
-<h2>Obtener el c&oacute;digo fuente</h2>
+<h1>Desarrollo</h1>
 <p>
 El control de versiones del c&oacute;digo fuente es llevado a cabo en un repositorio svn. 
 Puede obtener una copia del codigo fuente mediante 
@@ -63,6 +66,13 @@ svn co http://svn.juanjoconti.com.ar/logic/
 <p>
 o en Windows mediante alguna de muchas herramientas. La misma direcci&oacute;n también permite 
 navegar por el c&oacute;digo fuente: <a href="http://svn.juanjoconti.com.ar/logic/">http://svn.juanjoconti.com.ar/logic/</a>
+</p>
+<h1>Marco te&oacute;rico</h1>
+<h1>Autores y Licencia</h1>
+<p>
+XXX es desarrollado por <a href="mailto:jjconti@gnu.org">Juan José Conti &lt;jjconti@gnu.org&gt;</a> y 
+<a href="mailto:jjlorenzatti@gmail.com">Joel J. Lorenzatti &lt;jjlorenzatti@gmail.com&gt;</a> y es distribuido bajo los t&eacute;rminos de la licencia de
+Software Libre <a href="gpl-3.0.html">GPL version 3</a>. Toda colaboración es bienvenida.
 </p>
 </body>
 </html>
