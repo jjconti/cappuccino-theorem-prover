@@ -1,35 +1,35 @@
 a:link {
-	color: #46A;
+	color: #6d3f1d;
 	font-weight: bold;
 }
 a:visited {
 	font-weight: bold;
-	color: #46A;
+	color: #6d3f1d;
 }
 a:hover {
-  background-color: #DDF;
+  background-color: #e5c3a8;
 }
 div.code {
 	margin-left: 2%;
 	margin-right: 35%;
 	padding: 10px;
 	border-width: 2px;
-	background-color: #DEF;
+	background-color: #e5c3a8;
 	font-family: courier, fixed, monospace;
 }
 em {
 	font-style: italic;
 }
 h1 {
-	color: #46A;
+	color: #6d3f1d;
 	font-family: arial, helvetica, sans-serif;
 }
 h2 {
-	color: #46A;
+	color: #6d3f1d;
 	font-family: arial, helvetica, sans-serif;
 }
 h3 {
-	color: #46A;
+	color: #6d3f1d;
 	font-family: arial, helvetica, sans-serif;
 }
 p {
@@ -41,3 +41,4 @@ p {
 	margin-left: 20px;
 	margin-bottom: 20px;
 }
+
