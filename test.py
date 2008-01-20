@@ -395,5 +395,37 @@ class TestQuantRules(unittest.TestCase):
         r2 = self.yacc.parse(s2)
         self.assertEquals(r1.ug(), r2)
 
+class TestConjuntionEliminatio(unittest.TestCase):
+    '''Test Conjuntion Elimination'''
+
+    def setUp(self):
+        from yacc import yacc
+        self.yacc = yacc
+
+    def test1(self):
+        '''can ce ok'''
+        s1 = "(P(x) and G(x))"
+        r1 = self.yacc.parse(s1)
+        self.assertTrue(r1.can_ce())
+
+    def test2(self):
+        '''can ce wrong'''
+        s1 = "(P(x) or G(x))"
+        r1 = self.yacc.parse(s1)
+        self.assertFalse(r1.can_ce())
+
+    def test3(self):
+        '''ce 1'''
+        s1 = "(P(x) and G(x))"
+        s1a = "P(x)"
+        s1b = "G(x)"
+        r1 = self.yacc.parse(s1)
+        r1a = self.yacc.parse(s1a)
+        r1b = self.yacc.parse(s1b)
+        l = r1.ce()
+        self.assertEquals(l[0], r1a)
+        self.assertEquals(l[1], r1b)
+        self.assertEquals(len(l), 2)
+
 if __name__ == '__main__':
     unittest.main()

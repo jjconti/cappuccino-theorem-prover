@@ -38,18 +38,14 @@ class Sentence(object):
         self.scope == other.scope and self.predicate == other.predicate and \
         self.sentence == other.sentence and self.connector == other.connector \
         and self.csentence == other.csentence
-
-    #def comparar(self, other): #solucion temporal
-    #    return self.__str__() == other.__str__()
             
-
     def prenexion1(self):
         s = deepcopy(self)
         s.no = False
         s.sentence.scope.no()
         s.sentence.quant.change()
         s.sentence.source = "Prenexión 1"
-        return s.sentence
+        return [s.sentence]
 
     def prenexion2(self):
         s = deepcopy(self)
@@ -57,7 +53,7 @@ class Sentence(object):
         s.sentence.scope.no()
         s.sentence.quant.change()
         s.sentence.source = "Prenexión 2"
-        return s.sentence
+        return [s.sentence]
 
     def prenexion3(self):
         s = deepcopy(self)
@@ -68,7 +64,12 @@ class Sentence(object):
         s.connector = None
         s.csentence = None
         s.source = "Prenexión 3"
-        return s
+        return [s]
+
+    def can_prenexion4(self):
+        return self.connector in ('and', 'AND',) \
+               and self.sentence.quant \
+               and self.sentence.quant.all()
 
     def prenexion4(self):
         s = deepcopy(self)
@@ -79,7 +80,7 @@ class Sentence(object):
         s.connector = None
         s.csentence = None
         s.source = "Prenexión 4"
-        return s
+        return [s]
 
     def prenexion5(self):
         s = deepcopy(self)
@@ -90,7 +91,7 @@ class Sentence(object):
         s.connector = None
         s.csentence = None
         s.source = "Prenexión 5"
-        return s
+        return [s]
 
     def can_prenexion6(self):
         if self.connector in ('and', 'AND',):
@@ -107,7 +108,7 @@ class Sentence(object):
         s.connector = None
         s.csentence = None
         s.source = "Prenexión 6"
-        return s
+        return [s]
 
     def can_prenexion7(self):
         if self.connector in ('->',):
@@ -124,7 +125,7 @@ class Sentence(object):
         s.connector = None
         s.csentence = None
         s.source = "Prenexión 7"
-        return s
+        return [s]
 
     def can_prenexion8(self):
         if self.connector in ('->',):
@@ -141,7 +142,7 @@ class Sentence(object):
         s.connector = None
         s.csentence = None
         s.source = "Prenexión 8"
-        return s
+        return [s]
 
     def can_modus_ponens(self, p2):
         return self.connector in ('->',) and self.sentence == p2
@@ -149,7 +150,7 @@ class Sentence(object):
     def modus_ponens(self):
         s = deepcopy(self.csentence)
         s.source = "Modus Ponens"
-        return s
+        return [s]
 
     def can_ug(self):
         return True
@@ -158,7 +159,7 @@ class Sentence(object):
         var = self.get_any_var()
         s = Sentence(quant=Quant('A', var), scope=Scope(deepcopy(self)))
         s.source = "Universal Generalization"
-        return s
+        return [s]
 
     def get_any_var(self):
         '''Returns the first variable found'''
@@ -167,6 +168,16 @@ class Sentence(object):
         elif self.scope:
             return self.scope.sentence.get_any_var()
         else: return self.sentence.get_any_var()
+
+    def can_ce(self):
+        return self.connector == 'and'
+
+    def ce(self):
+        s1 = deepcopy(self.sentence)
+        s1.source = "Conjuntion elimination"
+        s2 = deepcopy(self.csentence)
+        s2.source = "Conjuntion elimination"
+        return [s1, s2]
 
 class Quant(object):
     def __init__(self, quant, var):
@@ -238,6 +249,10 @@ class KnowledgeBase(object):
         self.sons = []
         self.knowledge = []
         self.goals = []
+        self.solutions = [] #same list for all the nodes
+
+    def __eq__(self, kb):
+        return self.solutions.__eq__(kb.solutions)
 
     def add_knowledge(self, s):
         if type(s) == type([]):
@@ -254,11 +269,19 @@ class KnowledgeBase(object):
             if g not in self.knowledge:
                 return False
         return True
-    
+
     def search(self):
+        print "Solución más corta:"
+        self.__search()
+        min_sol = min(self.solutions)
+        min_sol.print_solution()
+    
+    def __search(self):
 
         if self.meta_proof():
-            self.print_solution()
+            if self not in self.solutions:
+                self.solutions.append(self)
+
         elif self.level >= MAX:
             if DEBUG: print "Maximo nivel de profundidad alcanzado: %s" % (MAX,)
         else:
@@ -275,21 +298,22 @@ class KnowledgeBase(object):
             for d,p in do_prems:
                 for i in p:
                     new = copy(self)
-                    new.knowledge = copy(self.knowledge) #reesribir copy
+                    new.knowledge = copy(self.knowledge)
                     new.father = self
                     new.level = self.level + 1
                     new.nson = nson
                     nson += 1
                     new.sons = []
-                    s = getattr(self,d)(i)
-                    if s not in self.knowledge:
-                        if DEBUG: print getattr(self, d).__doc__
-                        new.add_knowledge(s)
-                        self.sons.append(new)
-            
+                    sl = getattr(self,d)(i)
+                    for s in sl:
+                        if s not in self.knowledge:
+                            if DEBUG: print getattr(self, d).__doc__
+                            new.add_knowledge(s)
+                            self.sons.append(new)
+                
             # Profundidad acotada
             for s in self.sons:
-                s.search()
+                s.__search()
 
     def print_solution(self):
         print "SOLUCION: nodo %d del nivel %d" % (self.nson, self.level)
@@ -319,8 +343,7 @@ class KnowledgeBase(object):
         return p.prenexion3()
 
     def can_prenexion4(self):
-        return [p for p in self.knowledge if p.connector in ('and', 'AND',) \
-               and p.sentence.quant.all()]  
+        return [p for p in self.knowledge if p.can_prenexion4()]  
         
     def do_prenexion4(self, p):
         '''Prenexion 4'''
@@ -369,3 +392,10 @@ class KnowledgeBase(object):
     def do_ug(self, p):
         '''Universal Generalization'''
         return p.ug()
+
+    def can_ce(self):
+        return [p for p in self.knowledge if p.can_ce()]
+
+    def do_ce(self, p):
+        '''Conjuntion elimination'''
+        return p.ce()

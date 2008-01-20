@@ -29,4 +29,6 @@ import math.prem
 o
 from math.prem import 2-5 (te importa de la línea 2 a la 5)
 
+Para mayor velocidad, evitar los (A x) innecesarios
+ej: (A x)[(A x)[ T(x)]]
 

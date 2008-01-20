@@ -1,1 +1,1 @@
-((A x)[(P(x) -> G(x))] or P(x))
+(((A x)[(P(x) -> G(x))] or P(x)) and J(x))
