@@ -127,7 +127,7 @@ class TestPrenexiones(unittest.TestCase):
         r1 = self.yacc.parse(s1)
         s2 = "(E x)[not (P(x) -> G(x))]"
         r2 = self.yacc.parse(s2)
-        r3 = r1.prenexion1()
+        r3 = r1.prenexion1()[0]
         self.assertEquals(r2, r3)
 
     def test2(self):
@@ -136,7 +136,7 @@ class TestPrenexiones(unittest.TestCase):
         r1 = self.yacc.parse(s1)
         s2 = "(E x)[not P(x)]"
         r2 = self.yacc.parse(s2)
-        r3 = r1.prenexion1()
+        r3 = r1.prenexion1()[0]
         self.assertEquals(r2, r3)
 
     def test3(self):
@@ -145,7 +145,7 @@ class TestPrenexiones(unittest.TestCase):
         r1 = self.yacc.parse(s1)
         s2 = "(A x)[not (P(x) -> G(x))]"
         r2 = self.yacc.parse(s2)
-        r3 = r1.prenexion2()
+        r3 = r1.prenexion2()[0]
         self.assertEquals(r2, r3)
 
     def test4(self):
@@ -154,7 +154,7 @@ class TestPrenexiones(unittest.TestCase):
         r1 = self.yacc.parse(s1)
         s2 = "(A x)[not P(x)]"
         r2 = self.yacc.parse(s2)
-        r3 = r1.prenexion2()
+        r3 = r1.prenexion2()[0]
         self.assertEquals(r2, r3)
 
     def test5(self):
@@ -163,7 +163,7 @@ class TestPrenexiones(unittest.TestCase):
         r1 = self.yacc.parse(s1)
         s2 = "(A x)[((P(x) -> G(x)) or P(x))]"
         r2 = self.yacc.parse(s2)
-        r3 = r1.prenexion3()
+        r3 = r1.prenexion3()[0]
         self.assertEquals(r2, r3)
 
     def test6(self):
@@ -172,7 +172,7 @@ class TestPrenexiones(unittest.TestCase):
         r1 = self.yacc.parse(s1)
         s2 = "(A x)[(G(x) or P(x))]"
         r2 = self.yacc.parse(s2)
-        r3 = r1.prenexion3()
+        r3 = r1.prenexion3()[0]
         self.assertEquals(r2, r3)   
 
     def test7(self):
@@ -181,7 +181,7 @@ class TestPrenexiones(unittest.TestCase):
         r1 = self.yacc.parse(s1)
         s2 = "(A x)[((P(x) -> G(x)) and P(x))]"
         r2 = self.yacc.parse(s2)
-        r3 = r1.prenexion3()
+        r3 = r1.prenexion3()[0]
         self.assertEquals(r2, r3)
 
     def test8(self):
@@ -190,7 +190,7 @@ class TestPrenexiones(unittest.TestCase):
         r1 = self.yacc.parse(s1)
         s2 = "(A x)[(G(x) and P(x))]"
         r2 = self.yacc.parse(s2)
-        r3 = r1.prenexion3()
+        r3 = r1.prenexion3()[0]
         self.assertEquals(r2, r3)      
 
     def test9(self):
@@ -199,7 +199,7 @@ class TestPrenexiones(unittest.TestCase):
         r1 = self.yacc.parse(s1)
         s2 = "(E x)[((P(x) -> G(x)) or P(x))]"
         r2 = self.yacc.parse(s2)
-        r3 = r1.prenexion5()
+        r3 = r1.prenexion5()[0]
         self.assertEquals(r2, r3)
 
     def test10(self):
@@ -208,7 +208,7 @@ class TestPrenexiones(unittest.TestCase):
         r1 = self.yacc.parse(s1)
         s2 = "(E x)[(G(x) or P(x))]"
         r2 = self.yacc.parse(s2)
-        r3 = r1.prenexion5()
+        r3 = r1.prenexion5()[0]
         self.assertEquals(r2, r3)   
 
     def test11(self):
@@ -217,7 +217,7 @@ class TestPrenexiones(unittest.TestCase):
         r1 = self.yacc.parse(s1)
         s2 = "(E x)[((P(x) -> G(x)) and P(x))]"
         r2 = self.yacc.parse(s2)
-        r3 = r1.prenexion6()
+        r3 = r1.prenexion6()[0]
         self.assertEquals(r2, r3)
 
     def test12(self):
@@ -226,7 +226,7 @@ class TestPrenexiones(unittest.TestCase):
         r1 = self.yacc.parse(s1)
         s2 = "(E x)[(G(x) and P(x))]"
         r2 = self.yacc.parse(s2)
-        r3 = r1.prenexion6()
+        r3 = r1.prenexion6()[0]
         self.assertEquals(r2, r3)     
 
     def test13(self):
@@ -247,7 +247,7 @@ class TestPrenexiones(unittest.TestCase):
         r1 = self.yacc.parse(s1)
         s2 = "(A x)[((E x)[(P(x) -> G(x))] -> P(x))]"
         r2 = self.yacc.parse(s2)
-        r3 = r1.prenexion7()
+        r3 = r1.prenexion7()[0]
         self.assertEquals(r2, r3)
 
     def test16(self):
@@ -256,7 +256,7 @@ class TestPrenexiones(unittest.TestCase):
         r1 = self.yacc.parse(s1)
         s2 = "(A x)[(G(x) -> P(x))]"
         r2 = self.yacc.parse(s2)
-        r3 = r1.prenexion7()
+        r3 = r1.prenexion7()[0]
         self.assertEquals(r2, r3)     
 
     def test17(self):
@@ -277,7 +277,7 @@ class TestPrenexiones(unittest.TestCase):
         r1 = self.yacc.parse(s1)
         s2 = "(E x)[((E x)[(P(x) -> G(x))] -> P(x))]"
         r2 = self.yacc.parse(s2)
-        r3 = r1.prenexion8()
+        r3 = r1.prenexion8()[0]
         self.assertEquals(r2, r3)
 
     def test20(self):
@@ -286,7 +286,7 @@ class TestPrenexiones(unittest.TestCase):
         r1 = self.yacc.parse(s1)
         s2 = "(E x)[(G(x) -> P(x))]"
         r2 = self.yacc.parse(s2)
-        r3 = r1.prenexion8()
+        r3 = r1.prenexion8()[0]
         self.assertEquals(r2, r3)     
 
     def test21(self):
@@ -346,7 +346,7 @@ class TestModus(unittest.TestCase):
         s2 = "P(x)"
         r1 = self.yacc.parse(s1)
         r2 = self.yacc.parse(s2)
-        self.assertEquals(r1.modus_ponens(), r2)
+        self.assertEquals(r1.modus_ponens()[0], r2)
 
     def test6(self):
         '''do mp 2'''
@@ -354,7 +354,7 @@ class TestModus(unittest.TestCase):
         s2 = "(P(x) or T(x))"
         r1 = self.yacc.parse(s1)
         r2 = self.yacc.parse(s2)
-        self.assertEquals(r1.modus_ponens(), r2)
+        self.assertEquals(r1.modus_ponens()[0], r2)
 
     def test7(self):
         '''do mp 3'''
@@ -362,7 +362,7 @@ class TestModus(unittest.TestCase):
         s2 = "(A x)[P(x)]"
         r1 = self.yacc.parse(s1)
         r2 = self.yacc.parse(s2)
-        self.assertEquals(r1.modus_ponens(), r2)
+        self.assertEquals(r1.modus_ponens()[0], r2)
 
 class TestQuantRules(unittest.TestCase):
     '''Test rules related to quantifiers'''
@@ -377,7 +377,7 @@ class TestQuantRules(unittest.TestCase):
         s2 = "(A x)[P(x)]"
         r1 = self.yacc.parse(s1)
         r2 = self.yacc.parse(s2)
-        self.assertEquals(r1.ug(), r2)
+        self.assertEquals(r1.ug()[0], r2)
 
     def test2(self):
         '''ug 2'''
@@ -385,7 +385,7 @@ class TestQuantRules(unittest.TestCase):
         s2 = "(A x)[(P(x) or G(x))]"
         r1 = self.yacc.parse(s1)
         r2 = self.yacc.parse(s2)
-        self.assertEquals(r1.ug(), r2)
+        self.assertEquals(r1.ug()[0], r2)
 
     def test3(self):
         '''ug 3'''
@@ -393,7 +393,7 @@ class TestQuantRules(unittest.TestCase):
         s2 = "(A y)[(P(y) or G(x))]"
         r1 = self.yacc.parse(s1)
         r2 = self.yacc.parse(s2)
-        self.assertEquals(r1.ug(), r2)
+        self.assertEquals(r1.ug()[0], r2)
 
 class TestConjuntionEliminatio(unittest.TestCase):
     '''Test Conjuntion Elimination'''
