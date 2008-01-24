@@ -17,7 +17,8 @@ class Sentence(object):
         self.connector = connector
         self.csentence = csentence
         #self.atomic = not self.connector
-        self.source = "Premisa"
+        self.source = "Premise"
+        self.from_sentence = None
 
     def __str__(self):
         if self.quant and self.scope:
@@ -308,6 +309,7 @@ class KnowledgeBase(object):
                     for s in sl:
                         if s not in self.knowledge:
                             if DEBUG: print getattr(self, d).__doc__
+                            s.from_sentence = i #WARN: heavy copies?
                             new.add_knowledge(s)
                             self.sons.append(new)
                 
@@ -318,7 +320,11 @@ class KnowledgeBase(object):
     def print_solution(self):
         print "SOLUCION: nodo %d del nivel %d" % (self.nson, self.level)
         for n,k in enumerate(self.knowledge):
-            print "%d) %s - %s" % (n + 1, k, k.source)
+            k.index = n + 1
+            if k.from_sentence:
+                print "%d) %s - %s on %s" % (n + 1, k, k.source, k.from_sentence.index)
+            else:
+                print "%d) %s - %s" % (n + 1, k, k.source)
 
     def can_prenexion1(self):
         return [p for p in self.knowledge if p.no and p.sentence.quant.all()]
