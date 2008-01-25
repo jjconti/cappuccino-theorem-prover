@@ -422,6 +422,22 @@ class KnowledgeBase(object):
         '''Modus ponens'''
         return p.modus_ponens()
 
+    def can_modus_tollens(self):
+        return [p1 for p1 in self.knowledge for p2 in self.knowledge \
+               if p1.can_modus_tollens(p2)]  
+        
+    def do_modus_tollens(self, p):
+        '''Modus tollens'''
+        return p.modus_tollens()
+
+    def can_hs(self):
+        return [p1 for p1 in self.knowledge for p2 in self.knowledge \
+               if p1.can_hs(p2)]  
+        
+    def do_hs(self, p):
+        '''Modus tollens'''
+        return p.hs()
+
     def can_ug(self):
         return [p for p in self.knowledge if p.can_ug()]  
         
