@@ -2,7 +2,7 @@
 from copy import copy, deepcopy
 
 DEBUG = False
-MAX = 7
+MAX = 15
 
 # Classes for representing the sentences structure.
 
@@ -329,19 +329,25 @@ class KnowledgeBase(object):
         return True
 
     def search(self):
+        '''Profunidad  iterativa.'''
         print "Solución más corta:"
-        self.__search()
-        min_sol = min(self.solutions)
-        min_sol.print_solution()
-    
-    def __search(self):
+        for level in xrange(1, MAX+1):
+            self.__search(level)
+            if self.solutions:
+                min_sol = min(self.solutions)
+                min_sol.print_solution()
+                return  #No more searching...
+        print "No se encontró solución..."
+
+    def __search(self, maxlevel):
 
         if self.meta_proof():
+            #print "ABEMOS SOL"
             if self not in self.solutions:
                 self.solutions.append(self)
 
-        elif self.level >= MAX:
-            if DEBUG: print "Maximo nivel de profundidad alcanzado: %s" % (MAX,)
+        elif self.level >= maxlevel:
+            if DEBUG: print "Maximo nivel de profundidad alcanzado: %s" % (maxlevel,)
         else:
             can  = [m for m in dir(self) if m.startswith('can_')]
             prem_lists = [getattr(self, c)() for c in can] #some lists can be []
@@ -370,9 +376,10 @@ class KnowledgeBase(object):
                             new.add_knowledge(s)
                             self.sons.append(new)
                 
-            # Profundidad acotada
+            # Profundidad
             for s in self.sons:
-                s.__search()
+                #print "Procesando nivel: %d, nodo: %d" % (s.level, s.nson,)
+                s.__search(maxlevel)
 
     def print_solution(self):
         print "SOLUCION: nodo %d del nivel %d" % (self.nson, self.level)
