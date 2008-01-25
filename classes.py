@@ -377,7 +377,8 @@ class KnowledgeBase(object):
                 print "%d) %s - %s" % (n + 1, k, k.source)
 
     def can_prenexion1(self):
-        return [p for p in self.knowledge if p.no and p.sentence.quant.all()]
+        return [p for p in self.knowledge if p.no and p.sentence.quant and \
+                                             p.sentence.quant.all()]
 
     def do_prenexion1(self, p):
         '''Prenexión 1'''
