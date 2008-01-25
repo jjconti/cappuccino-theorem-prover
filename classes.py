@@ -2,6 +2,7 @@
 from copy import copy, deepcopy
 
 DEBUG = False
+
 MAX = 15
 
 # Classes for representing the sentences structure.

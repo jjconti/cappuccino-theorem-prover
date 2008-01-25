@@ -1,2 +1,5 @@
-(P(x) -> Q(z))
-(Q(z) -> R(a))
+(S(x) or (T(x) and U(x)))
+(P(x) -> Q(x))
+(Q(x) -> R(x))
+(R(x) -> not S(x))
+P(x)
