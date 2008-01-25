@@ -435,7 +435,7 @@ class TestModus(unittest.TestCase):
         self.assertEquals(r1.modus_tollens()[0], r2)
 
     def test13(self):
-        '''do mp 2'''
+        '''do mt 2'''
         s1 = "(G(x) -> (P(x) or T(x)))"
         s2 = "not G(x)"
         r1 = self.yacc.parse(s1)
@@ -443,22 +443,22 @@ class TestModus(unittest.TestCase):
         self.assertEquals(r1.modus_tollens()[0], r2)
 
     def test14(self):
-        '''do mp 3'''
+        '''do mt 3'''
         s1 = "(G(x) -> (A x)[P(x)])"
         s2 = "not G(x)"
         r1 = self.yacc.parse(s1)
         r2 = self.yacc.parse(s2)
         self.assertEquals(r1.modus_tollens()[0], r2)
 
-class TestHypotheticSyllogism(unittest.TestCase):
-    '''Test hypothetic syllogism'''
+class TestSyllogism(unittest.TestCase):
+    '''Test hypothetic and conjuction syllogism'''
 
     def setUp(self):
         from yacc import yacc
         self.yacc = yacc
 
     def test1(self):
-        '''hs 1'''
+        '''can hs 1'''
         s1 = "(P(x) -> G(x))"
         s2 = "(G(x) -> Q(x))"
         r1 = self.yacc.parse(s1)
@@ -466,7 +466,7 @@ class TestHypotheticSyllogism(unittest.TestCase):
         self.assertTrue(r1.can_hs(r2))
 
     def test2(self):
-        '''hs 2'''
+        '''can hs 2'''
         s1 = "(P(x) -> not G(x))"
         s2 = "(not G(x) -> Q(x))"
         r1 = self.yacc.parse(s1)
@@ -474,7 +474,7 @@ class TestHypotheticSyllogism(unittest.TestCase):
         self.assertTrue(r1.can_hs(r2))
 
     def test3(self):
-        '''hs 3'''
+        '''can hs 3'''
         s1 = "(P(x) -> not G(x))"
         s2 = "(G(x) -> Q(x))"
         r1 = self.yacc.parse(s1)
@@ -482,13 +482,129 @@ class TestHypotheticSyllogism(unittest.TestCase):
         self.assertFalse(r1.can_hs(r2))
 
     def test4(self):
-        '''hs 4'''
+        '''can hs 4'''
         s1 = "(P(x) -> not G(x))"
         s2 = "(G(x) -> Q(x))"
         r1 = self.yacc.parse(s1)
         r2 = self.yacc.parse(s2)
         self.assertFalse(r1.can_hs(r2))
 
+    def test5(self):
+        '''do hs 1'''
+        s1 = "(P(x) -> G(x))"
+        s2 = "(G(x) -> Q(x))"
+        s3 = "(P(x) -> Q(x))"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        r3 = self.yacc.parse(s3)
+        self.assertEquals(r1.hs(r2)[0], r3)
+
+    def test6(self):
+        '''do hs 2'''
+        s1 = "(P(x) -> not G(x))"
+        s2 = "(not G(x) -> Q(x))"
+        s3 = "(P(x) -> Q(x))"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        r3 = self.yacc.parse(s3)
+        self.assertEquals(r1.hs(r2)[0], r3)
+
+    def test7(self):
+        '''can ds1 1'''
+        s1 = "(P(x) or G(x))"
+        s2 = "not P(x)"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertTrue(r1.can_ds1(r2))
+
+    def test8(self):
+        '''can ds1 2'''
+        s1 = "(not P(x) or not G(x))"
+        s2 = "P(x)"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertTrue(r1.can_ds1(r2))
+
+    def test9(self):
+        '''can ds1 3'''
+        s1 = "(P(x) -> not G(x))"
+        s2 = "P(x)"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertFalse(r1.can_ds1(r2))
+
+    def test10(self):
+        '''can ds1 4'''
+        s1 = "(P(x) -> not G(x))"
+        s2 = "not G(x)"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertFalse(r1.can_ds1(r2))
+
+    def test11(self):
+        '''do ds1 1'''
+        s1 = "(P(x) or G(x))"
+        s2 = "G(x)"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertEquals(r1.ds1()[0], r2)
+
+    def test12(self):
+        '''do ds1 2'''
+        s1 = "(P(x) -> not G(x))"
+        s2 = "not G(x)"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertEquals(r1.ds1()[0], r2)
+
+    def test13(self):
+        '''can ds2 1'''
+        s1 = "(P(x) or G(x))"
+        s2 = "not G(x)"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertTrue(r1.can_ds2(r2))
+
+    def test14(self):
+        '''can ds2 2'''
+        s1 = "(not P(x) or not G(x))"
+        s2 = "G(x)"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertTrue(r1.can_ds2(r2))
+
+    def test15(self):
+        '''can ds2 3'''
+        s1 = "(P(x) -> not G(x))"
+        s2 = "not G(x)"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertFalse(r1.can_ds2(r2))
+
+    def test16(self):
+        '''can ds2 4'''
+        s1 = "(P(x) -> not G(x))"
+        s2 = "P(x)"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertFalse(r1.can_ds2(r2))
+
+    def test17(self):
+        '''do ds2 1'''
+        s1 = "(P(x) or G(x))"
+        s2 = "P(x)"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertEquals(r1.ds2()[0], r2)
+
+    def test18(self):
+        '''do ds2 2'''
+        s1 = "(P(x) -> not G(x))"
+        s2 = "P(x)"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertEquals(r1.ds2()[0], r2)
+ 
 
 class TestQuantRules(unittest.TestCase):
     '''Test rules related to quantifiers'''

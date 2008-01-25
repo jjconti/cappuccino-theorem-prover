@@ -9,12 +9,6 @@ Hacer modificaciones luego de la siguietne línea:
 
 --------------------------------------------------------------------------------
 
-Numerar las sentencias para qeu podamos tener salidas del tipo:
-por Modus Ponens en 3
-Hacer que la Sentencia tenga como propiedades:
-nro: orden en la kb
-
-
 El programa debe berificar que las formulas sean sentencias:
     - no debe haber variables libres
 

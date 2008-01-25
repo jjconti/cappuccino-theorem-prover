@@ -176,10 +176,30 @@ class Sentence(object):
         return self.connector in ('->',) and p2.connector in ('->',) and \
                self.csentence == p2.sentence
 
-    def hs(self):
-        s = Sentence(sentence=self.sentence, connector='->', csentnce=p2.csentence)
+    def hs(self, p2):
+        s = Sentence(sentence=deepcopy(self.sentence), \
+                     connector='->', csentence=deepcopy(p2.csentence))
         s.source = "Hypothetic Syllogism"
-        return [s]  
+        return [s] 
+
+    #DS: Disjunction Syllogism
+    def can_ds1(self, p2):
+        return self.connector in ('vel', 'VEL', 'or', 'OR',) and \
+               self.sentence.negate() == p2
+
+    def ds1(self):
+        s = deepcopy(self.csentence)
+        s.source = "Disjunction Syllogism"
+        return [s] 
+
+    def can_ds2(self, p2):
+        return self.connector in ('vel', 'VEL', 'or', 'OR',) and \
+               self.csentence.negate() == p2
+
+    def ds2(self):
+        s = deepcopy(self.sentence)
+        s.source = "Disjunction Syllogism"
+        return [s] 
     
     #UG: Universal Generalization
     def can_ug(self):
@@ -435,8 +455,24 @@ class KnowledgeBase(object):
                if p1.can_hs(p2)]  
         
     def do_hs(self, p):
-        '''Modus tollens'''
+        '''Hypothetic Syllogism'''
         return p.hs()
+
+    def can_ds1(self):
+        return [p1 for p1 in self.knowledge for p2 in self.knowledge \
+               if p1.can_ds1(p2)]  
+        
+    def do_ds1(self, p):
+        '''Disjunction Syllogism'''
+        return p.ds1()
+
+    def can_ds2(self):
+        return [p1 for p1 in self.knowledge for p2 in self.knowledge \
+               if p1.can_ds2(p2)]  
+        
+    def do_ds2(self, p):
+        '''Disjunction Syllogism'''
+        return p.ds2()
 
     def can_ug(self):
         return [p for p in self.knowledge if p.can_ug()]  
