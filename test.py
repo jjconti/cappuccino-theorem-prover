@@ -125,7 +125,6 @@ class TestNoSentence(unittest.TestCase):
     '''Test the no method in Sentence.'''
 
     def setUp(self):
-        from classes import Sentence
         from yacc import yacc
         self.yacc = yacc
 
@@ -450,6 +449,46 @@ class TestModus(unittest.TestCase):
         r1 = self.yacc.parse(s1)
         r2 = self.yacc.parse(s2)
         self.assertEquals(r1.modus_tollens()[0], r2)
+
+class TestHypotheticSyllogism(unittest.TestCase):
+    '''Test hypothetic syllogism'''
+
+    def setUp(self):
+        from yacc import yacc
+        self.yacc = yacc
+
+    def test1(self):
+        '''hs 1'''
+        s1 = "(P(x) -> G(x))"
+        s2 = "(G(x) -> Q(x))"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertTrue(r1.can_hs(r2))
+
+    def test2(self):
+        '''hs 2'''
+        s1 = "(P(x) -> not G(x))"
+        s2 = "(not G(x) -> Q(x))"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertTrue(r1.can_hs(r2))
+
+    def test3(self):
+        '''hs 3'''
+        s1 = "(P(x) -> not G(x))"
+        s2 = "(G(x) -> Q(x))"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertFalse(r1.can_hs(r2))
+
+    def test4(self):
+        '''hs 4'''
+        s1 = "(P(x) -> not G(x))"
+        s2 = "(G(x) -> Q(x))"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertFalse(r1.can_hs(r2))
+
 
 class TestQuantRules(unittest.TestCase):
     '''Test rules related to quantifiers'''

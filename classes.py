@@ -164,7 +164,6 @@ class Sentence(object):
         return [s]
 
     def can_modus_tollens(self, p2):
-        print self, p2
         return self.connector in ('->',) and self.csentence.negate() == p2
 
     def modus_tollens(self):
@@ -172,6 +171,17 @@ class Sentence(object):
         s.source = "Modus Tollens"
         return [s]   
 
+    #HS: Hypothetic Syllogism
+    def can_hs(self, p2):
+        return self.connector in ('->',) and p2.connector in ('->',) and \
+               self.csentence == p2.sentence
+
+    def hs(self):
+        s = Sentence(sentence=self.sentence, connector='->', csentnce=p2.csentence)
+        s.source = "Hypothetic Syllogism"
+        return [s]  
+    
+    #UG: Universal Generalization
     def can_ug(self):
         return True
 
@@ -189,6 +199,7 @@ class Sentence(object):
             return self.scope.sentence.get_any_var()
         else: return self.sentence.get_any_var()
 
+    #CE: Conjunction Elimination
     def can_ce(self):
         return self.connector == 'and'
 
