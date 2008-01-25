@@ -114,6 +114,37 @@ class TestEq(unittest.TestCase):
         r = self.yacc.parse(s)
         self.assertTrue(r == r)
 
+    def test11(self):
+        s1 = "Hermanos(x,y,z)"
+        s2 = "Hermanos(x, y, z)"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertTrue(r1 == r2)
+
+class TestNoSentence(unittest.TestCase):
+    '''Test the no method in Sentence.'''
+
+    def setUp(self):
+        from classes import Sentence
+        from yacc import yacc
+        self.yacc = yacc
+
+    def test1(self):
+        '''no 1'''
+        s1 = "P(x)"
+        r1 = self.yacc.parse(s1)
+        s2 = "not P(x)"
+        r2 = self.yacc.parse(s2)
+        self.assertEquals(r1.negate(), r2)
+
+    def test2(self):
+        '''no 2'''
+        s1 = "P(x)"
+        r1 = self.yacc.parse(s1)
+        s2 = "not P(x)"
+        r2 = self.yacc.parse(s2)
+        self.assertEquals(r1, r2.negate())
+
 class TestPrenexiones(unittest.TestCase):
     '''Test prenexiones'''
 
@@ -363,6 +394,62 @@ class TestModus(unittest.TestCase):
         r1 = self.yacc.parse(s1)
         r2 = self.yacc.parse(s2)
         self.assertEquals(r1.modus_ponens()[0], r2)
+
+    def test8(self):
+        '''can mt 1'''
+        s1 = "(G(x) -> P(x))"
+        s2 = "not P(x)"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertTrue(r1.can_modus_tollens(r2))
+
+    def test9(self):
+        '''can mt 2'''
+        s1 = "(G(x) -> (P(x) or T(x)))"
+        s2 = "not (P(x) or T(x))"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertTrue(r1.can_modus_tollens(r2))
+
+    def test10(self):
+        '''can mt 3'''
+        s1 = "(G(x) -> (A x)[P(x)])"
+        s2 = "not (A x)[P(x)]"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertTrue(r1.can_modus_tollens(r2))
+
+    def test11(self):
+        '''can mt 4'''
+        s1 = "(A x)[(P(x) -> G(x))]"
+        s2 = "not G(x)"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertFalse(r1.can_modus_tollens(r2))
+
+    def test12(self):
+        '''do mt 1'''
+        s1 = "(G(x) -> P(x))"
+        s2 = "not G(x)"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertEquals(r1.modus_tollens()[0], r2)
+
+    def test13(self):
+        '''do mp 2'''
+        s1 = "(G(x) -> (P(x) or T(x)))"
+        s2 = "not G(x)"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertEquals(r1.modus_tollens()[0], r2)
+
+    def test14(self):
+        '''do mp 3'''
+        s1 = "(G(x) -> (A x)[P(x)])"
+        s2 = "not G(x)"
+        r1 = self.yacc.parse(s1)
+        r2 = self.yacc.parse(s2)
+        self.assertEquals(r1.modus_tollens()[0], r2)
 
 class TestQuantRules(unittest.TestCase):
     '''Test rules related to quantifiers'''

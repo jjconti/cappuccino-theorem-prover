@@ -39,6 +39,16 @@ class Sentence(object):
         self.scope == other.scope and self.predicate == other.predicate and \
         self.sentence == other.sentence and self.connector == other.connector \
         and self.csentence == other.csentence
+
+    def negate(self):
+        '''Returns a new sentence, negated.
+        P(x) becames not P(x), but not (x) becames P(x).'''
+        if self.no:
+            return self.sentence
+        else:
+            s = Sentence(sentence=deepcopy(self))
+            s.no = True
+            return s
             
     def prenexion1(self):
         s = deepcopy(self)
@@ -152,6 +162,15 @@ class Sentence(object):
         s = deepcopy(self.csentence)
         s.source = "Modus Ponens"
         return [s]
+
+    def can_modus_tollens(self, p2):
+        print self, p2
+        return self.connector in ('->',) and self.csentence.negate() == p2
+
+    def modus_tollens(self):
+        s = self.sentence.negate()
+        s.source = "Modus Tollens"
+        return [s]   
 
     def can_ug(self):
         return True
