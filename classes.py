@@ -171,25 +171,32 @@ class Sentence(object):
         s.source = "Modus Tollens"
         return [s]   
 
-    #HS: Hypothetic Syllogism
+    #HS: Hypothetical Syllogism
+    #HS is the only rule that need both sentence from the can_* method
+    #at hd method. I'll keep a reference to the second sentence in the
+    #first one ot avoid change the KB engine.
     def can_hs(self, p2):
-        return self.connector in ('->',) and p2.connector in ('->',) and \
-               self.csentence == p2.sentence
+        if self.connector in ('->',) and p2.connector in ('->',) and \
+        self.csentence == p2.sentence:
+            self.p2 = p2
+            return True
+        return False
+            
 
-    def hs(self, p2):
+    def hs(self):
         s = Sentence(sentence=deepcopy(self.sentence), \
-                     connector='->', csentence=deepcopy(p2.csentence))
-        s.source = "Hypothetic Syllogism"
+                     connector='->', csentence=deepcopy(self.p2.csentence))
+        s.source = "Hypothetical Syllogism"
         return [s] 
 
-    #DS: Disjunction Syllogism
+    #DS: Disjunctive Syllogism
     def can_ds1(self, p2):
         return self.connector in ('vel', 'VEL', 'or', 'OR',) and \
                self.sentence.negate() == p2
 
     def ds1(self):
         s = deepcopy(self.csentence)
-        s.source = "Disjunction Syllogism"
+        s.source = "Disjunctive Syllogism"
         return [s] 
 
     def can_ds2(self, p2):
@@ -198,7 +205,7 @@ class Sentence(object):
 
     def ds2(self):
         s = deepcopy(self.sentence)
-        s.source = "Disjunction Syllogism"
+        s.source = "Disjunctive Syllogism"
         return [s] 
     
     #UG: Universal Generalization
@@ -459,7 +466,7 @@ class KnowledgeBase(object):
                if p1.can_hs(p2)]  
         
     def do_hs(self, p):
-        '''Hypothetic Syllogism'''
+        '''Hypothetical Syllogism'''
         return p.hs()
 
     def can_ds1(self):
@@ -467,7 +474,7 @@ class KnowledgeBase(object):
                if p1.can_ds1(p2)]  
         
     def do_ds1(self, p):
-        '''Disjunction Syllogism'''
+        '''Disjunctive Syllogism'''
         return p.ds1()
 
     def can_ds2(self):
@@ -475,7 +482,7 @@ class KnowledgeBase(object):
                if p1.can_ds2(p2)]  
         
     def do_ds2(self, p):
-        '''Disjunction Syllogism'''
+        '''Disjunctive Syllogism'''
         return p.ds2()
 
     def can_ug(self):

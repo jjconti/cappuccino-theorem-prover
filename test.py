@@ -451,7 +451,7 @@ class TestModus(unittest.TestCase):
         self.assertEquals(r1.modus_tollens()[0], r2)
 
 class TestSyllogism(unittest.TestCase):
-    '''Test hypothetic and conjuction syllogism'''
+    '''Test hypothetical and conjuctive syllogism'''
 
     def setUp(self):
         from yacc import yacc
