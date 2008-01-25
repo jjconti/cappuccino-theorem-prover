@@ -394,7 +394,8 @@ class KnowledgeBase(object):
 
     def can_prenexion3(self):
         return [p for p in self.knowledge if p.connector \
-               in ('vel', 'VEL', 'or', 'OR',) and p.sentence.quant.all()]  
+               in ('vel', 'VEL', 'or', 'OR',) and p.sentence.quant and \
+               p.sentence.quant.all()]  
         
     def do_prenexion3(self, p):
         '''Prenexion 3'''
@@ -409,7 +410,8 @@ class KnowledgeBase(object):
 
     def can_prenexion5(self):
         return [p for p in self.knowledge if p.connector \
-               in ('vel', 'VEL', 'or', 'OR',) and p.sentence.quant.exist()]  
+               in ('vel', 'VEL', 'or', 'OR',) and p.sentence.quant and \
+               p.sentence.quant.exist()]  
         
     def do_prenexion5(self, p):
         '''Prenexion 5'''
