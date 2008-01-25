@@ -385,7 +385,7 @@ class KnowledgeBase(object):
         return p.prenexion1()
       
     def can_prenexion2(self):
-        return [p for p in self.knowledge if p.no and p.sentence.quat and \
+        return [p for p in self.knowledge if p.no and p.sentence.quant and \
                                              p.sentence.quant.exist()]
 
     def do_prenexion2(self, p):
