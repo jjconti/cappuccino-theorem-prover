@@ -1,0 +1,3 @@
+(Carpintero(x) -> Obrero(x))
+(Obrero(x) -> Proletario(x))
+Carpintero(x)

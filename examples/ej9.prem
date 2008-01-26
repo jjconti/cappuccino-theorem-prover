@@ -1,0 +1,5 @@
+(Permanece_la_presion_atmosferica(x) -> Permanece_la_tormenta(x))
+(Permanece_la_tormenta(x) -> Hay_nubes(x))
+(Hay_nubes(x) -> not Sale_el_sol(x))
+(Sale_el_sol(x) or (Me_enfermo(x) and Muero(x)))
+Permanece_la_presion_atmosferica(x)

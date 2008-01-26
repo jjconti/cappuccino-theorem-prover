@@ -1,5 +1,0 @@
-(S(x) or (T(x) and U(x)))
-(P(x) -> Q(x))
-(Q(x) -> R(x))
-(R(x) -> not S(x))
-P(x)
