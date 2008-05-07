@@ -497,7 +497,8 @@ class TestSyllogism(unittest.TestCase):
         r1 = self.yacc.parse(s1)
         r2 = self.yacc.parse(s2)
         r3 = self.yacc.parse(s3)
-        self.assertEquals(r1.hs(r2)[0], r3)
+	self.assertTrue(r1.can_hs(r2))
+        self.assertEquals(r1.hs()[0], r3)
 
     def test6(self):
         '''do hs 2'''
@@ -507,7 +508,8 @@ class TestSyllogism(unittest.TestCase):
         r1 = self.yacc.parse(s1)
         r2 = self.yacc.parse(s2)
         r3 = self.yacc.parse(s3)
-        self.assertEquals(r1.hs(r2)[0], r3)
+	self.assertTrue(r1.can_hs(r2))
+        self.assertEquals(r1.hs()[0], r3)
 
     def test7(self):
         '''can ds1 1'''

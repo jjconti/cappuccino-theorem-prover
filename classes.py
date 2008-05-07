@@ -2,6 +2,7 @@
 from copy import copy, deepcopy
 
 DEBUG = False
+NODE_DEBUG = False
 
 MAX = 15
 
@@ -333,17 +334,17 @@ class KnowledgeBase(object):
         '''Profunidad  iterativa.'''
         print "Solución más corta:"
         for level in xrange(1, MAX+1):
+            print "ITERACIÓN: %d" % (level,)
             self.__search(level)
             if self.solutions:
                 min_sol = min(self.solutions)
                 min_sol.print_solution()
                 return  #No more searching...
-        print "No se encontró solución..."
+        print "No se encontró solución en una profundidad de %d nodos." % (MAX,)
 
     def __search(self, maxlevel):
 
         if self.meta_proof():
-            #print "ABEMOS SOL"
             if self not in self.solutions:
                 self.solutions.append(self)
 
@@ -379,7 +380,8 @@ class KnowledgeBase(object):
                 
             # Profundidad
             for s in self.sons:
-                #print "Procesando nivel: %d, nodo: %d" % (s.level, s.nson,)
+                if NODE_DEBUG:
+                    print "Procesando nivel: %d, nodo: %d" % (s.level, s.nson,)
                 s.__search(maxlevel)
 
     def print_solution(self):
